@@ -1,214 +1,351 @@
 /* =============================================
-   SUSHI KATANA — APP.JS
+   LE PAIN QUOTIDIEN — APP.JS
    ============================================= */
 
 'use strict';
 
 // ─── Constants ───────────────────────────────
 const WA_NUMBER = '994559406018';
-const PAGE_SCROLL_MAP = {};   // page -> scrollY before leaving
+const PAGE_SCROLL_MAP = {};
 let currentPage = 'home';
 let currentModalProduct = null;
 let currentVacancy = null;
 let cart = [];
 
-// ─── DATA ─────────────────────────────────────
+// ─── MENU DATA (Le Pain Quotidien) ────────────
 
 const menuData = {
-  sets: [
+  desserts: [
     {
-      id: 's1',
-      name: 'Set N1 — Super Təklif',
-      desc: '70 əd. müxtəlif suşi + 1L Coca-Cola pulsuz! Böyük yığıncaqlar üçün ideal seçim.',
-      price: 29,
-      weight: '70 əd. + 1L Cola',
-      img: 'images/set-n1.jpg',
-      badge: 'Super Təklif'
+      id: 'ds1',
+      name: 'Şokoladlı "Manhattan Cookie"',
+      desc: 'Şokoladlı parçalarla dolu New York üslublu klassik cookie.',
+      price: 7.45,
+      weight: '',
+      img: 'images/menu-hero.jpg'
     },
     {
-      id: 's2',
-      name: 'Set N3',
-      desc: '30 əd. müxtəlif suşi — California, Philadelphia, Hot Crab, Hot Salmon, Baked, Maki daxildir.',
-      price: 19,
-      weight: '30 əd.',
-      img: 'images/set-n3.jpg',
-      badge: 'Populyar'
+      id: 'ds2',
+      name: 'Matcha Cookie',
+      desc: 'Matcha çayından hazırlanmış xüsusi cookie.',
+      price: 8.65,
+      weight: '',
+      img: 'images/menu-hero.jpg'
     },
     {
-      id: 's3',
-      name: 'Sushi Premium Set',
-      desc: 'Klassik Nigiri, Maki, California Roll — hər şey bir yerdə. Suşi sevənlər üçün ideal set.',
-      price: 29,
-      weight: '6 növ, hər birindən',
+      id: 'ds3',
+      name: 'Belçika Şokoladlı Brauni',
+      desc: 'Orijinal Belçika şokoladı ilə hazırlanmış qoyu şokoladlı brauni.',
+      price: 8.65,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'ds4',
+      name: 'Alma & Badam Tart',
+      desc: 'Təzə alma və badam kreması ilə doldurulmuş fransız tartu.',
+      price: 10.45,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'ds5',
+      name: 'Şaftalı & Badam Tart',
+      desc: 'Şaftalı və badam kreması ilə hazırlanmış mövsümi tart.',
+      price: 10.95,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'ds6',
+      name: 'Limonlu Tart',
+      desc: 'Klassik fransız limonlu tart — turş-şirin mükəmməl uyum.',
+      price: 9.95,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'ds7',
+      name: 'Mövsümi Meyvəli Tart',
+      desc: 'Təzə mövsüm meyvələri ilə hazırlanmış rəngli tart.',
+      price: 10.95,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'ds8',
+      name: 'Mövsümi Meyvəli Pavlova',
+      desc: 'Məzəli merenq keki üzərinə krem və mövsüm meyvələri ilə.',
+      price: 12.65,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'ds9',
+      name: 'Qırmızı Meyvəli San Sebastian',
+      desc: 'Qırmızı meyvələr ilə bəzədilmiş Bask üslublu yanmış çeriz tortu.',
+      price: 12.95,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    }
+  ],
+  hotdrinks: [
+    {
+      id: 'hd1',
+      name: 'Espresso',
+      desc: 'Klassik İtalyan espresosu — güclü, zəngin, aromatik.',
+      price: 5.45,
+      weight: '',
       img: 'images/menu-hero.jpg',
       badge: 'Klassik'
+    },
+    {
+      id: 'hd2',
+      name: 'Double Espresso',
+      desc: 'İki shot espresso — daha güclü, daha zəngin dad.',
+      price: 6.45,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'hd3',
+      name: 'Türk Qəhvəsi',
+      desc: 'Ənənəvi üsulla hazırlanmış türk qəhvəsi.',
+      price: 6.95,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'hd4',
+      name: 'Double Americano',
+      desc: 'İki shot espresso üzərinə isti su əlavə edilmiş uzun qəhvə.',
+      price: 6.95,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'hd5',
+      name: 'Cappuccino',
+      desc: 'Espresso, buxarlanmış süd və köpük ilə hazırlanmış klassik kapuçino.',
+      price: 7.45,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'hd6',
+      name: 'Flat White',
+      desc: 'Espresso və az köpüklü buxarlanmış süd ilə hazırlanmış.',
+      price: 7.95,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'hd7',
+      name: 'Latte',
+      desc: 'Espresso və bol buxarlanmış süd ilə hazırlanmış yumşaq qəhvə.',
+      price: 7.45,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'hd8',
+      name: 'Mocha',
+      desc: 'Espresso, şokolad sousu və buxarlanmış süd ilə şirin qəhvə.',
+      price: 9.95,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'hd9',
+      name: 'Alternativ Süd',
+      desc: 'İstənilən qəhvəyə alternativ bitki südü əlavəsi (yulaf, badam, soya).',
+      price: 4.00,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'hd10',
+      name: 'Glayə Espresso',
+      desc: 'Buzlu espresonun üzərinə dondurma əlavə edilmiş İtalyan klassikası.',
+      price: 3.00,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'hd11',
+      name: 'Organik Çay',
+      desc: 'Seçilmiş organik çay kolleksiyası — english breakfast, early grey, chamomile, jasmine, rooibos.',
+      price: 9.95,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'hd12',
+      name: 'Nano Çayı',
+      desc: 'Xüsusi seçilmiş nano çay.',
+      price: 9.65,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'hd13',
+      name: 'İsti Belçika Şokoladı',
+      desc: 'Organik Belçika şokoladı ilə hazırlanmış xüsusi isti içki.',
+      price: 9.95,
+      weight: '',
+      img: 'images/menu-hero.jpg',
+      badge: 'Xüsusi'
+    },
+    {
+      id: 'hd14',
+      name: 'Matcha Latte',
+      desc: 'Premium matcha tozu və buxarlanmış süd ilə hazırlanmış sağlıklı içki.',
+      price: 10.45,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'hd15',
+      name: 'Ginger Elixir',
+      desc: 'Zəncəfil, limon, taze nane və bal ilə hazırlanmış xüsusi elixir.',
+      price: 10.95,
+      weight: '',
+      img: 'images/menu-hero.jpg',
+      badge: 'Ginger Elixir'
     }
   ],
-  rolls: [
+  colddrinks: [
     {
-      id: 'r1',
-      name: 'California Roll',
-      desc: 'Krab əti, avokado, salatalıq, tobiko kürüsü ilə hazırlanmış klassik uramaki roll.',
-      price: 8,
-      weight: '8 əd.',
+      id: 'cd1',
+      name: 'Soyuq Kofe İçkiləri',
+      desc: 'Müxtəlif soyuq kofe seçimləri — iced latte, iced americano və daha çox.',
+      price: 8.45,
+      weight: '',
       img: 'images/menu-hero.jpg'
     },
     {
-      id: 'r2',
-      name: 'Philadelphia Roll',
-      desc: 'Krem pendir, somon, avokado ilə hazırlanmış zəngin dadlı uramaki roll.',
-      price: 9,
-      weight: '8 əd.',
-      img: 'images/gallery1.jpg'
-    },
-    {
-      id: 'r3',
-      name: 'Hot Crab Roll',
-      desc: 'İsti qızardılmış krab içlikli, xüsusi Katana sousu ilə servis edilən roll.',
-      price: 8,
-      weight: '8 əd.',
-      img: 'images/set-n3.jpg'
-    },
-    {
-      id: 'r4',
-      name: 'Hot Salmon Roll',
-      desc: 'Qızardılmış somon içlikli, wasabi mayonezi ilə servis edilən isti roll.',
-      price: 8,
-      weight: '8 əd.',
+      id: 'cd2',
+      name: 'Iced Latte',
+      desc: 'Buzlu süd ilə soyudulmuş espresso — yay ayları üçün mükəmməl seçim.',
+      price: 8.45,
+      weight: '',
       img: 'images/menu-hero.jpg'
     },
     {
-      id: 'r5',
-      name: 'Baked Roll',
-      desc: 'Fırında bişirilmiş, kremli pendir sousu ilə örtülmüş xüsusi Katana rollları.',
-      price: 9,
-      weight: '8 əd.',
-      img: 'images/gallery1.jpg'
-    },
-    {
-      id: 'r6',
-      name: 'Spicy Tuna Roll',
-      desc: 'Ədviyyatlı ton balığı, xiyar, sriracha mayonezi ilə hazırlanmış qızğın roll.',
-      price: 9,
-      weight: '8 əd.',
-      img: 'images/set-n3.jpg'
-    },
-    {
-      id: 'r7',
-      name: 'Dragon Roll',
-      desc: 'Karides tempura, avokado, unagi sousu ilə hazırlanmış vizual cəhətdən möhtəşəm roll.',
-      price: 11,
-      weight: '8 əd.',
+      id: 'cd3',
+      name: 'Iced Caramel Latte',
+      desc: 'Karamel sousu əlavə edilmiş buzlu latte.',
+      price: 8.95,
+      weight: '',
       img: 'images/menu-hero.jpg'
     },
     {
-      id: 'r8',
-      name: 'Rainbow Roll',
-      desc: 'Krab, avokado California rollu üzərinə somon, ton balığı, karides diləmləri ilə.',
-      price: 12,
-      weight: '8 əd.',
-      img: 'images/gallery1.jpg'
-    }
-  ],
-  nigiri: [
-    {
-      id: 'n1',
-      name: 'Somon Nigiri',
-      desc: 'Təzə Atlantik somonundan hazırlanmış, əl ilə yoğurulmuş pirinc üzərində nigiri.',
-      price: 5,
-      weight: '2 əd.',
+      id: 'cd4',
+      name: 'Bumble Coffee',
+      desc: 'Bal və espresso ilə hazırlanmış xüsusi soyuq içki.',
+      price: 9.95,
+      weight: '',
       img: 'images/menu-hero.jpg'
     },
     {
-      id: 'n2',
-      name: 'Ton Balığı Nigiri',
-      desc: 'Premium Bluefin ton balığından hazırlanmış, xüsusi mari sousu ilə servis.',
-      price: 6,
-      weight: '2 əd.',
+      id: 'cd5',
+      name: 'Iced Matcha Latte',
+      desc: 'Buzlu matcha latte — yulaf südü ilə.',
+      price: 11.65,
+      weight: '',
+      img: 'images/menu-hero.jpg',
+      badge: 'Xüsusi'
+    },
+    {
+      id: 'cd6',
+      name: 'Speculoos Chiller',
+      desc: 'Speculoos печenye dadı ilə soyuq içki — unikal dad.',
+      price: 12.95,
+      weight: '',
       img: 'images/menu-hero.jpg'
     },
     {
-      id: 'n3',
-      name: 'Karides Nigiri',
-      desc: 'Bişirilmiş böyük karides, pirinc üzərində incə nori ilə bağlanmış nigiri.',
-      price: 5,
-      weight: '2 əd.',
+      id: 'cd7',
+      name: 'Alternativ Süd',
+      desc: 'Bitki əsaslı süd alternativləri.',
+      price: 4.00,
+      weight: '',
       img: 'images/menu-hero.jpg'
     },
     {
-      id: 'n4',
-      name: 'Unagi Nigiri',
-      desc: 'Şirin-şor teriyaki sousu ilə şüyüdlənmiş tərəvəz balığı (unagi) nigiris.',
-      price: 7,
-      weight: '2 əd.',
-      img: 'images/menu-hero.jpg'
-    }
-  ],
-  maki: [
-    {
-      id: 'm1',
-      name: 'Maki Salmon',
-      desc: 'Təzə somon və nori dərinliyindən hazırlanmış sadə, lakin dadlı klassik maki rollları.',
-      price: 5,
-      weight: '10 əd.',
-      img: 'images/menu-hero.jpg'
+      id: 'cd8',
+      name: 'Green Detox',
+      desc: 'Ananas, kivi, zəncəfil, alma, nane, ispanaq ilə hazırlanmış detoks smuzi.',
+      price: 11.65,
+      weight: '',
+      img: 'images/menu-hero.jpg',
+      badge: 'Smuzi'
     },
     {
-      id: 'm2',
-      name: 'Maki Ton Balığı',
-      desc: 'Premium ton balığı ilə hazırlanmış ənənəvi Yapon maki rollları.',
-      price: 5,
-      weight: '10 əd.',
-      img: 'images/menu-hero.jpg'
+      id: 'cd9',
+      name: 'Berry Bliss',
+      desc: 'Mərəng, çiyələk, albala, qara-qarağat ilə meyvəli smuzi.',
+      price: 12.65,
+      weight: '',
+      img: 'images/menu-hero.jpg',
+      badge: 'Smuzi'
     },
     {
-      id: 'm3',
-      name: 'Maki Xiyar',
-      desc: 'Kappa maki — vegeterian seçimi, təzə xiyar ilə hazırlanmış yüngül maki rollları.',
-      price: 4,
-      weight: '10 əd.',
-      img: 'images/menu-hero.jpg'
+      id: 'cd10',
+      name: 'Curious Passion',
+      desc: 'Taze sıxılmış portağal şirəsi, ananas, nektarin, marakuya ilə ekzotik smuzi.',
+      price: 13.65,
+      weight: '',
+      img: 'images/menu-hero.jpg',
+      badge: 'Smuzi'
     },
     {
-      id: 'm4',
-      name: 'Maki Avokado',
-      desc: 'Kremli avokado ilə hazırlanmış bitki əsaslı yüngül maki rollları.',
-      price: 4,
-      weight: '10 əd.',
-      img: 'images/menu-hero.jpg'
-    }
-  ],
-  drinks: [
-    {
-      id: 'd1',
-      name: 'Coca-Cola',
-      desc: 'Klassik Coca-Cola — suşi ilə mükəmməl cütlük.',
-      price: 2,
-      weight: '0.33L',
-      img: 'images/set-n1.jpg'
+      id: 'cd11',
+      name: 'Təzə Sıxılmış Portağal Şirəsi',
+      desc: 'Hər gün təzə sıxılmış portağal şirəsi.',
+      price: 11.45,
+      weight: '25cl / 35cl',
+      img: 'images/menu-hero.jpg',
+      badge: 'Limonadlar'
     },
     {
-      id: 'd2',
-      name: 'Coca-Cola 1L',
-      desc: 'Böyük Coca-Cola, setlər üçün ideal seçim.',
-      price: 4,
-      weight: '1L',
-      img: 'images/set-n1.jpg'
-    },
-    {
-      id: 'd3',
-      name: 'Yaşıl Çay',
-      desc: 'Ənənəvi Yapon yaşıl çayı — suşi ilə klassik kombinasiya.',
-      price: 3,
-      weight: '400ml',
+      id: 'cd12',
+      name: 'Ev Üsulu Limonad',
+      desc: 'Taze sıxılmış portağal, taze limon şirəsi ilə hazırlanmış ev limonadı.',
+      price: 9.45,
+      weight: '',
       img: 'images/menu-hero.jpg'
     },
     {
-      id: 'd4',
-      name: 'Miso Şorba',
-      desc: 'Ənənəvi Yapon miso şorbasıı, tofu və dəniz yosunu ilə.',
-      price: 4,
-      weight: '350ml',
+      id: 'cd13',
+      name: 'Ev Üsulu Iced Tea',
+      desc: 'Tart grey çay, taze sıkılmış portağal və limon şirəsi ilə ev iced tea-sı.',
+      price: 9.95,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'cd14',
+      name: 'Tropical Iced Tea',
+      desc: 'Jasmin çay, taze sıxılmış portağal şirəsi ilə tropik iced tea.',
+      price: 9.95,
+      weight: '',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'cd15',
+      name: 'San Pellegrino',
+      desc: 'Premium İtalyan mineral suyu.',
+      price: 7.20,
+      weight: 'Limon / Narç Portağal',
+      img: 'images/menu-hero.jpg'
+    },
+    {
+      id: 'cd16',
+      name: 'Qazsız / Qazlı Su',
+      desc: 'Məzəli və sağlam içmə suyu.',
+      price: 4.95,
+      weight: '30cl / 75cl',
       img: 'images/menu-hero.jpg'
     }
   ]
@@ -216,72 +353,72 @@ const menuData = {
 
 const faqData = [
   {
-    q: 'Çatdırılma müddəti nə qədərdir?',
-    a: 'Bakı daxilindəki sifarişlər üçün ortalama çatdırılma müddəti 30-60 dəqiqədir. Sifariş verildikdən sonra kuryerimiz sizinlə əlaqə saxlayır.'
+    q: 'Le Pain Quotidien nədir?',
+    a: 'Le Pain Quotidien — 1990-cı ildə Brüsseldə qurulan Belçika çörəkçilik restoranı zənciridir. Üzvi, təbii ingredientlər istifadə edərək artisanal çörəklər, tartinlər, salatlar, qəhvə və desert hazırlayırıq.'
   },
   {
-    q: 'Minimum sifariş məbləği nədir?',
-    a: 'Minimum sifariş məbləği 10 AZN-dir. Çatdırılma xidmətimiz pulsuzdur (müəyyən rayonlar üçün şərtlər tətbiq oluna bilər).'
+    q: 'Menyuda vegeterian / veqan seçimlər varmı?',
+    a: 'Bəli! Menyumuzda bol miqdarda vegeterian və veqan seçimlər mövcuddur. Üzvi bitki südü alternativlərimiz (yulaf, badam, soya) da mövcuddur.'
   },
   {
     q: 'Rezervasiya üçün depozit tələb olunurmu?',
-    a: 'Xeyr, rezervasiya tamamilə pulsuzdur. Masa saxlamaq üçün heç bir ödəniş tələb edilmir. Sadəcə gəlmədiyiniz halda xəbər verməyinizi rica edirik.'
+    a: 'Xeyr, rezervasiya tamamilə pulsuzdur. Masa saxlamaq üçün heç bir ödəniş tələb edilmir. Sadəcə gəlmədiyiniz halda xəbər verməyinizi xahiş edirik.'
   },
   {
     q: 'Allergenləri nəzərə alırsınızmı?',
-    a: 'Bəli, biz allergen məlumatlarını çox ciddi qəbul edirik. Sifarişinizi verərkən xüsusi diet tələblərinizi qeyd etdikdə aşpazımız uyğun hazırlayacaq.'
+    a: 'Bəli, biz allergen məlumatlarını çox ciddi qəbul edirik. Sifarişinizi verərkən xüsusi diet tələblərinizi qeyd etdikdə aşpazımız uyğun hazırlayacaq. Əsas allergenlər haqqında ətraflı məlumat üçün işçilərimizlə əlaqə saxlayın.'
   },
   {
     q: 'Ödəniş üsulları hansılardır?',
-    a: 'Nağd pul, bank kartı (Kapital Bank, ABB, PASHA Bank), ANSAN və onlayn ödəniş sistemləri qəbul edilir.'
+    a: 'Nağd pul, bank kartı (Visa, Mastercard, Kapital Bank, ABB), ANSAN və onlayn ödəniş sistemləri qəbul edilir.'
   },
   {
     q: 'Korporativ sifarişlər mümkündürmü?',
     a: 'Bəli! Şirkətlər, tədbirlər və böyük qruplar üçün xüsusi korporativ menyu və endirim proqramlarımız mövcuddur. WhatsApp vasitəsilə bizimlə əlaqə saxlayın.'
   },
   {
-    q: 'Qablaşdırma necədir? Eco-friendlydir?',
-    a: 'Biz ekoloji cəhətdən təmiz, geri dönüşümlü qablaşdırma materiallarından istifadə edirik. Soyuducu paketlər suşini çatdırılma zamanı ən təzə vəziyyətdə saxlayır.'
+    q: 'Ginger Elixir nə üçündür?',
+    a: 'Ginger Elixir Le Pain Quotidien-in xüsusi içkisidir. Zəncəfil, limon, taze nane və bal ilə hazırlanır. İmmunitet gücləndirici, həzm sistemi üçün faydalı, energetik bir içkidir.'
   },
   {
     q: 'Restoranın iş saatları necədir?',
-    a: 'B.E – Cümə: 10:00–23:00 | Şənbə: 10:00–24:00 | Bazar: 11:00–23:00. Çatdırılma xidməti restoran iş saatları daxilindədir.'
+    a: 'B.E – Cümə: 08:00–22:00 | Şənbə: 09:00–23:00 | Bazar: 09:00–22:00.'
   }
 ];
 
 const vacanciesData = [
   {
     id: 'v1',
-    icon: '🍱',
-    title: 'Suşi Ustad (Itamae)',
+    icon: '☕',
+    title: 'Barista',
     type: 'Tam Ştat',
-    salary: '800 – 1200 AZN',
+    salary: '700 – 1000 AZN',
     schedule: 'Dəyişən növbə (2/2)',
-    requirements: 'Ən az 1 il suşi hazırlama təcrübəsi, gigiyena sertifikatı',
-    desc: 'Katana mütbəxinə peşəkar suşi ustad axtarırıq. Kreativlik, dəqiqlik və komanda ruhu vacibdir.',
-    duties: 'Menyu maddələrinin hazırlanması, freshness nəzarəti, müştəri sifarişlərinin icrasını'
+    requirements: 'Qəhvə hazırlama təcrübəsi, müştəri xidmətləri bacarığı',
+    desc: 'Le Pain Quotidien mətbəxinə peşəkar barista axtarırıq. Keyfiyyət, dəqiqlik və gülərüz xidmət vacibdir.',
+    duties: 'Qəhvə və içkilərin hazırlanması, bar sahəsinin təmizliyi, müştəri xidməti'
   },
   {
     id: 'v2',
-    icon: '🛵',
-    title: 'Kuryer',
-    type: 'Yarım / Tam Ştat',
-    salary: '500 – 800 AZN + bonus',
-    schedule: 'Çevik qrafik',
-    requirements: 'Sürücülük vəsiqəsi (B kateqoriyası), Bakı ərazisinə bələdlik',
-    desc: 'Sürətli, etibarlı kuryer işə qəbul edirik. Öz nəqliyyatı olan üçün əlavə bonus nəzərdə tutulur.',
-    duties: 'Sifarişlərin vaxtında çatdırılması, müştəri ilə ünsiyyət'
+    icon: '🍞',
+    title: 'Çörəkçi',
+    type: 'Tam Ştat',
+    salary: '800 – 1200 AZN',
+    schedule: 'Erkən növbə (06:00-14:00)',
+    requirements: 'Çörəkçilik təcrübəsi, gigiyena sertifikatı',
+    desc: 'Artisanal çörəklər hazırlamaq üçün peşəkar çörəkçi axtarırıq.',
+    duties: 'Gündəlik çörək istehsalı, keyfiyyət nəzarəti, inventar idarəsi'
   },
   {
     id: 'v3',
     icon: '👩‍💼',
-    title: 'Kassir / Operator',
+    title: 'Ofisiant',
     type: 'Tam Ştat',
     salary: '600 – 900 AZN',
     schedule: 'Dəyişən növbə',
-    requirements: 'Kompüter savadlılığı, ünsiyyət bacarığı, 18+ yaş',
-    desc: 'Müştəri xidmətləri üzrə kassir/operator axtarırıq. Qulaqardına vurmamaq, gülərüz olmaq vacibdir.',
-    duties: 'Sifarişlərin qəbulu, ödəniş əməliyyatları, müştəri məmnuniyyəti'
+    requirements: 'Ünsiyyət bacarığı, gülərüz olmaq, 18+ yaş',
+    desc: 'Müştərilərə xidmət üçün peşəkar ofisiant axtarırıq.',
+    duties: 'Sifarişlərin qəbulu, masa xidməti, müştəri məmnuniyyəti'
   },
   {
     id: 'v4',
@@ -301,7 +438,6 @@ const vacanciesData = [
 function showPage(pageId) {
   const oldPage = document.getElementById('page-' + currentPage);
   if (oldPage) {
-    // Save scroll position of current page
     PAGE_SCROLL_MAP[currentPage] = window.scrollY;
     oldPage.classList.remove('active');
   }
@@ -312,18 +448,15 @@ function showPage(pageId) {
   if (!newPage) return;
   newPage.classList.add('active');
 
-  // Update nav active state
   document.querySelectorAll('.nav-link').forEach(link => {
     link.classList.toggle('active', link.dataset.page === pageId);
   });
 
-  // Restore scroll position for the new page
   const savedScroll = PAGE_SCROLL_MAP[pageId] || 0;
   window.scrollTo({ top: savedScroll, behavior: 'instant' });
 }
 
 function goBack() {
-  // Save current scroll
   PAGE_SCROLL_MAP[currentPage] = window.scrollY;
   showPage('home');
 }
@@ -402,13 +535,12 @@ function renderCart() {
   const totalPrice = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
 
   countEl.textContent = totalItems;
-  totalEl.textContent = totalPrice + ' AZN';
+  totalEl.textContent = totalPrice.toFixed(2) + ' AZN';
 
   const isEmpty = cart.length === 0;
   emptyEl.style.display = isEmpty ? 'flex' : 'none';
   footerEl.style.display = isEmpty ? 'none' : 'block';
 
-  // Remove old items (not the empty notice)
   const existingItems = itemsEl.querySelectorAll('.cart-item');
   existingItems.forEach(el => el.remove());
 
@@ -416,10 +548,10 @@ function renderCart() {
     const div = document.createElement('div');
     div.className = 'cart-item';
     div.innerHTML = `
-      <img class="cart-item-img" src="${item.img}" alt="${escHtml(item.name)}" loading="lazy" onerror="this.src='images/menu-hero.jpg'" />
+      <img class="cart-item-img" src="${item.img}" alt="${escHtml(item.name)}" loading="lazy" onerror="this.src='images/menu-hero.jpg'" width="60" height="60" />
       <div class="cart-item-info">
         <div class="cart-item-name">${escHtml(item.name)}</div>
-        <div class="cart-item-price">${item.price * item.qty} AZN</div>
+        <div class="cart-item-price">${(item.price * item.qty).toFixed(2)} AZN</div>
       </div>
       <div class="cart-item-controls">
         <button class="qty-btn" onclick="changeQty('${item.id}',-1)" aria-label="Azalt">−</button>
@@ -434,7 +566,7 @@ function renderCart() {
 function bumpCartCount() {
   const el = document.getElementById('cartCount');
   el.classList.remove('bump');
-  void el.offsetWidth; // reflow
+  void el.offsetWidth;
   el.classList.add('bump');
   setTimeout(() => el.classList.remove('bump'), 300);
 }
@@ -442,15 +574,15 @@ function bumpCartCount() {
 function sendOrder() {
   if (cart.length === 0) return;
 
-  let msg = '🍱 *YENİ SİFARİŞ — Sushi Katana*\n\n';
+  let msg = '🥐 *YENİ SİFARİŞ — Le Pain Quotidien*\n\n';
   msg += '━━━━━━━━━━━━━━━━━━━━\n';
   cart.forEach((item, idx) => {
-    msg += `${idx + 1}. ${item.name}\n   ${item.qty} × ${item.price} AZN = ${item.qty * item.price} AZN\n`;
+    msg += `${idx + 1}. ${item.name}\n   ${item.qty} × ${item.price.toFixed(2)} AZN = ${(item.qty * item.price).toFixed(2)} AZN\n`;
   });
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   msg += '━━━━━━━━━━━━━━━━━━━━\n';
-  msg += `💰 *CƏMİ: ${total} AZN*\n\n`;
-  msg += '📍 Çatdırılma ünvanınızı yazın.';
+  msg += `💰 *CƏMİ: ${total.toFixed(2)} AZN*\n\n`;
+  msg += '📍 Masanızı və ya çatdırılma ünvanınızı yazın.';
 
   const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
   window.open(url, '_blank', 'noopener,noreferrer');
@@ -462,7 +594,7 @@ function renderMenuGrids() {
   Object.entries(menuData).forEach(([cat, items]) => {
     const grid = document.getElementById('grid-' + cat);
     if (!grid) return;
-    grid.innerHTML = '';
+    const fragment = document.createDocumentFragment();
     items.forEach(item => {
       const card = document.createElement('div');
       card.className = 'menu-card';
@@ -471,19 +603,21 @@ function renderMenuGrids() {
       card.setAttribute('aria-label', item.name);
 
       const badgeHtml = item.badge
-        ? `<div style="position:absolute;top:10px;left:10px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;z-index:1;">${escHtml(item.badge)}</div>`
+        ? `<div style="position:absolute;top:10px;left:10px;background:var(--accent);color:#000;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;z-index:1;">${escHtml(item.badge)}</div>`
         : '';
+
+      const priceDisplay = Number.isInteger(item.price) ? item.price + ' AZN' : item.price.toFixed(2) + ' AZN';
 
       card.innerHTML = `
         <div class="menu-card-img">
           ${badgeHtml}
-          <img src="${item.img}" alt="${escHtml(item.name)}" loading="lazy" onerror="this.src='images/menu-hero.jpg'" />
+          <img src="${item.img}" alt="${escHtml(item.name)}" loading="lazy" onerror="this.src='images/menu-hero.jpg'" width="220" height="180" />
         </div>
         <div class="menu-card-body">
           <div class="menu-card-name">${escHtml(item.name)}</div>
           <div class="menu-card-desc">${escHtml(item.desc)}</div>
           <div class="menu-card-footer">
-            <span class="menu-card-price">${item.price} AZN</span>
+            <span class="menu-card-price">${priceDisplay}</span>
             <button class="add-btn" onclick="event.stopPropagation();addToCart('${item.id}')" aria-label="Səbətə əlavə et">+</button>
           </div>
         </div>
@@ -491,8 +625,9 @@ function renderMenuGrids() {
 
       card.addEventListener('click', () => openProductModal(item));
       card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openProductModal(item); });
-      grid.appendChild(card);
+      fragment.appendChild(card);
     });
+    grid.appendChild(fragment);
   });
 }
 
@@ -513,8 +648,9 @@ function openProductModal(product) {
   document.getElementById('modalImg').alt = product.name;
   document.getElementById('modalName').textContent = product.name;
   document.getElementById('modalDesc').textContent = product.desc;
-  document.getElementById('modalPrice').textContent = product.price + ' AZN';
-  document.getElementById('modalWeight').textContent = product.weight;
+  const priceDisplay = Number.isInteger(product.price) ? product.price + ' AZN' : product.price.toFixed(2) + ' AZN';
+  document.getElementById('modalPrice').textContent = priceDisplay;
+  document.getElementById('modalWeight').textContent = product.weight || '';
   document.getElementById('productModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -532,7 +668,8 @@ function closeProductModalBtn() {
 
 function renderFaq() {
   const list = document.getElementById('faqList');
-  faqData.forEach((item, i) => {
+  const fragment = document.createDocumentFragment();
+  faqData.forEach((item) => {
     const el = document.createElement('div');
     el.className = 'faq-item';
     el.innerHTML = `
@@ -544,14 +681,14 @@ function renderFaq() {
         <div class="faq-a-inner">${escHtml(item.a)}</div>
       </div>
     `;
-    list.appendChild(el);
+    fragment.appendChild(el);
   });
+  list.appendChild(fragment);
 }
 
 function toggleFaq(btn) {
   const item = btn.closest('.faq-item');
   const isOpen = item.classList.contains('open');
-  // Close all
   document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
@@ -560,6 +697,7 @@ function toggleFaq(btn) {
 
 function renderVacancies() {
   const grid = document.getElementById('vacancyGrid');
+  const fragment = document.createDocumentFragment();
   vacanciesData.forEach(v => {
     const card = document.createElement('div');
     card.className = 'vacancy-card';
@@ -576,8 +714,9 @@ function renderVacancies() {
     `;
     card.addEventListener('click', () => openVacancyModal(v));
     card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openVacancyModal(v); });
-    grid.appendChild(card);
+    fragment.appendChild(card);
   });
+  grid.appendChild(fragment);
 }
 
 // ─── VACANCY MODAL ────────────────────────────
@@ -611,7 +750,7 @@ function closeVacancyModalBtn() {
 
 function applyVacancy() {
   if (!currentVacancy) return;
-  const msg = `👋 *Vakansiyaya Müraciət — Sushi Katana*\n\n🔹 *Vəzifə:* ${currentVacancy.title}\n🔹 *İş rejimi:* ${currentVacancy.type}\n\nSalam! Bu vakansiya ilə maraqlanıram. Əlaqə saxlamaq istəyirəm.`;
+  const msg = `👋 *Vakansiyaya Müraciət — Le Pain Quotidien*\n\n🔹 *Vəzifə:* ${currentVacancy.title}\n🔹 *İş rejimi:* ${currentVacancy.type}\n\nSalam! Bu vakansiya ilə maraqlanıram. Əlaqə saxlamaq istəyirəm.`;
   window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
 }
 
@@ -619,12 +758,12 @@ function applyVacancy() {
 
 function submitReservation(e) {
   e.preventDefault();
-  const name    = document.getElementById('resName').value.trim();
-  const phone   = document.getElementById('resPhone').value.trim();
-  const date    = document.getElementById('resDate').value;
-  const time    = document.getElementById('resTime').value;
-  const guests  = document.getElementById('resGuests').value;
-  const note    = document.getElementById('resNote').value.trim();
+  const name   = document.getElementById('resName').value.trim();
+  const phone  = document.getElementById('resPhone').value.trim();
+  const date   = document.getElementById('resDate').value;
+  const time   = document.getElementById('resTime').value;
+  const guests = document.getElementById('resGuests').value;
+  const note   = document.getElementById('resNote').value.trim();
 
   if (!name || !phone || !date || !time || !guests) {
     showToast('Zəhmət olmasa bütün məcburi xanaları doldurun!');
@@ -632,7 +771,7 @@ function submitReservation(e) {
   }
 
   const formattedDate = formatDate(date);
-  let msg = `📅 *REZERVASIYA — Sushi Katana*\n\n`;
+  let msg = `📅 *REZERVASIYA — Le Pain Quotidien*\n\n`;
   msg += `━━━━━━━━━━━━━━━━━━━━\n`;
   msg += `👤 *Ad, Soyad:* ${name}\n`;
   msg += `📞 *Telefon:* ${phone}\n`;
@@ -719,7 +858,6 @@ document.addEventListener('DOMContentLoaded', function() {
   renderVacancies();
   renderCart();
 
-  // Set min date for reservation to today
   const today = new Date().toISOString().split('T')[0];
   const resDate = document.getElementById('resDate');
   if (resDate) resDate.min = today;
